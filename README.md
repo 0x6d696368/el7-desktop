@@ -76,6 +76,7 @@ After installation you need to setup the installation by running some of the
 	* `browser.safebrowsing.phishing.enabled` = `false`
 	* `datareporting.healthreport.uploadEnabled` = `false`
 	* `extensions.screenshots.upload-disabled` = `true`
+	* `network.IDN_show_punycode` = `true`
 	* TODO 
 	
 * Add-ons:
