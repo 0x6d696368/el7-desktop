@@ -112,6 +112,16 @@ After installation you need to setup the installation by running some of the
 
 ## LUKS
 
+### Format
+
+```
+sudo cryptsetup luksFormat /dev/sdb1
+sudo cryptsetup luksOpen /dev/sdb1 new
+sudo mkfs.ext4 /dev/mapper/new [-L <disk label>]
+sudo e2label /dev/mapper/new <new disk label>
+sudo cryptsetup luksClose new
+```
+
 ### Add key
 
 ```
@@ -123,6 +133,9 @@ sudo cryptsetup luksAddKey /dev/sdb1
 ```
 sudo cryptsetup luksOpen /dev/sdb1 old
 sudo mount -o nouuid /dev/mapper/old ~/mnt
+# do stuff
+sudo umount ~/mnt
+sudo cryptsetup luksClose old
 ```
 
 ## Misc
