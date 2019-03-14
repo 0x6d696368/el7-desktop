@@ -5,7 +5,7 @@ sudo echo "Thx"
 sudo yum -y update
 sudo yum -y install deltarpm 
 
-sudo yum -y install vim-enhanced firefox gnupg2 pinentry-gtk evince eog file-roller \
+sudo yum -y install vim-enhanced ctags firefox gnupg2 pinentry-gtk evince eog file-roller \
 	thunderbird wget gedit xdg-utils gvfs gvfs-mtp pulseaudio pavucontrol \
 	qrencode
 

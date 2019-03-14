@@ -32,6 +32,8 @@ set t_vb=
 syntax enable
 setlocal spell spelllang=en_us,de_de
 
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+
 set background=dark
 colorscheme elflord
 set textwidth=0
@@ -39,5 +41,8 @@ set formatoptions-=
 set colorcolumn=81
 hi ColorColumn ctermbg=8 
 "--------------------------------------------------------------------------------------------------------------
+
+"ctags
+set tags=./tags;
 
 

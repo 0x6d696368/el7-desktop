@@ -5,7 +5,7 @@ sudo echo "Thx"
 sudo yum -y update
 sudo yum -y install deltarpm epel-release
 sudo yum -y groupinstall "X Window System"
-sudo yum -y install i3 i3lock i3status lightdm rxvt-unicode gnome-terminal dejavu-sans-fonts dejavu-sans-mono-fonts dejavu-serif-fonts NetworkManager NetworkManager-wifi NetworkManager-openvpn network-manager-applet NetworkManager-openvpn-gnome NetworkManager-tui xdotool xwd netpbm-progs xorg-x11-server-utils
+sudo yum -y install i3 i3lock i3status lightdm rxvt-unicode gnome-terminal dejavu-*fonts NetworkManager NetworkManager-wifi NetworkManager-openvpn network-manager-applet NetworkManager-openvpn-gnome NetworkManager-tui xdotool xwd netpbm-progs xorg-x11-server-utils
 sudo systemctl set-default graphical.target # boots to i3 by default
 # sudo systemctl isolate graphical.target # starts i3 from terminal
 
@@ -196,9 +196,15 @@ cat > tmp << PASTECONFIGURATIONFILE
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+# HINT: get keysym names via \`xev\`
+
+
 set \$mod Mod4
 
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
 font pango:DejaVu Sans Mono 7
+#font -*-fixed-*-*-*-*-10-*-*-*-*-*-*-*
 
 # Use Mouse+\$mod to drag floating windows to their wanted position
 #floating_modifier \$mod
@@ -277,6 +283,8 @@ bindsym \$mod+7 workspace 7
 bindsym \$mod+8 workspace 8
 bindsym \$mod+9 workspace 9
 bindsym \$mod+0 workspace 10
+bindsym \$mod+minus workspace 11
+bindsym \$mod+equal workspace 12
 
 # move focused container to workspace
 bindsym \$mod+Shift+1 move container to workspace 1
@@ -289,6 +297,8 @@ bindsym \$mod+Shift+7 move container to workspace 7
 bindsym \$mod+Shift+8 move container to workspace 8
 bindsym \$mod+Shift+9 move container to workspace 9
 bindsym \$mod+Shift+0 move container to workspace 10
+bindsym \$mod+Shift+minus move container to workspace 11
+bindsym \$mod+Shift+equal move container to workspace 12
 
 # reload the configuration file
 bindsym \$mod+Shift+c reload
@@ -25003,6 +25013,8 @@ set t_vb=
 syntax enable
 setlocal spell spelllang=en_us,de_de
 
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+
 set background=dark
 colorscheme elflord
 set textwidth=0
@@ -25010,6 +25022,9 @@ set formatoptions-=
 set colorcolumn=81
 hi ColorColumn ctermbg=8 
 "--------------------------------------------------------------------------------------------------------------
+
+"ctags
+set tags=./tags;
 
 
 PASTECONFIGURATIONFILE
@@ -25152,8 +25167,18 @@ URxvt.keysym.Shift-Down: command:\\033]721;1\\007
 PASTECONFIGURATIONFILE
 mv tmp "/home/user/.Xdefaults"
 cat > tmp << PASTECONFIGURATIONFILE
-default-cache-ttl 60
-max-cache-ttl 600
+# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
+# default-cache-ttl 60
+# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
+# max-cache-ttl 600
+
+###+++--- GPGConf ---+++###
+default-cache-ttl 300
+max-cache-ttl 3000
+###+++--- GPGConf ---+++### Mon Mar 11 03:41:39 2019 CET
+# GPGConf edited this configuration file.
+# It will disable options before this marked block, but it will
+# never change anything below these lines.
 PASTECONFIGURATIONFILE
 mv tmp "/home/user/.gnupg/gpg-agent.conf"
 cat > tmp << PASTECONFIGURATIONFILE
