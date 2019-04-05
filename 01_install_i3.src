@@ -9,5 +9,5 @@ sudo yum -y install i3 i3lock i3status lightdm rxvt-unicode gnome-terminal dejav
 sudo systemctl set-default graphical.target # boots to i3 by default
 # sudo systemctl isolate graphical.target # starts i3 from terminal
 
-# COPY i3 CONFIGURATION FILES
+# COPY CONFIGURATION FILES
 

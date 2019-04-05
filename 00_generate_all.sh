@@ -1,2 +1,2 @@
 #!/bin/bash
-./00_generate_install_i3.sh > 01_install_i3.sh; chmod u+x 01_install_i3.sh
+./00_generate_install.sh 01_install_i3.src i3 > 01_install_i3.sh; chmod u+x 01_install_i3.sh
