@@ -54,9 +54,11 @@ After installation you need to setup the installation by running some of the
 
 ## Stupid fixes
 
-### Chromium / Chrome
+### Set default applications in terminal
 
-* `chrome://flags/#omnibox-ui-hide-steady-state-url-scheme-and-subdomains`
+```
+exo-preferred-applications
+```
 
 ### Firefox
 
@@ -136,6 +138,32 @@ sudo mount -o nouuid /dev/mapper/old ~/mnt
 # do stuff
 sudo umount ~/mnt
 sudo cryptsetup luksClose old
+```
+
+## GPG
+
+List keys:
+
+```
+gpg --list-keys
+```
+
+Generate key:
+
+```
+gpg --default-new-key-algo rsa4096 --gen-key
+```
+
+Export key:
+
+```
+gpg -a --export <keyid | email> > pgp.asc
+```
+
+See info on key without importing:
+
+```
+gpg pgp.asc
 ```
 
 ## Misc

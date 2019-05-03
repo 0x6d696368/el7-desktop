@@ -35,11 +35,13 @@ setlocal spell spelllang=en_us,de_de
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 set background=dark
-colorscheme elflord
+colorscheme default
 set textwidth=0
 set formatoptions-=
 set colorcolumn=81
 hi ColorColumn ctermbg=8 
+hi SpellBad ctermbg=1
+hi SpellLocal ctermbg=17
 "--------------------------------------------------------------------------------------------------------------
 
 "ctags

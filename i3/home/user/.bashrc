@@ -13,8 +13,9 @@ fi
 # [<exit_code> <time> <history #> <command #> <user>@<host> <path>
 # <$(user)|#(root)> ...
 
+
 get_time() {
-	echo $(TZ=UTC date +%Y%m%d%H%M%S%z)
+	echo $(TZ=UTC date +%Y%m%dT%H%M%S%z)
 }
 
 get_exit() {
@@ -33,7 +34,13 @@ make_prompt() {
 	history -a
 	history -c
 	history -r
-	PS1='\[\e[1m\][$(get_exit $?) $(get_time) \! \# \u@\h \w]\n$ \[\e[0m\]'
+#	PS1='\[\e[1m\][$(get_exit $?) $(get_time) \! \# \u@\h \w]\n$ \[\e[0m\]'
+	if [[ -f ~/.bash_privacy ]]
+	then
+		PS1='\[\e[1m\][$(get_exit $?) 19840413T133742+0000 \! \# user@localhost \w]\n$ \[\e[0m\]'
+	else
+		PS1='\[\e[1m\][$(get_exit $?) $(get_time) \! \# \u@\h \w]\n$ \[\e[0m\]'
+	fi
 	# set environment variable for global pwd
 	echo "$(pwd)" > ~/.globalpwd
 }
