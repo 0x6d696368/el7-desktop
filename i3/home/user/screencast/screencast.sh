@@ -11,16 +11,18 @@ echo "Recording will start in 1 second ..."
 
 sleep 1
 
-# FIXME: pulse audio is broken :(
-#ffmpeg -y \
-#       -f x11grab -s ${width}x${heigth} -i ${DISPLAY} \
-#       -f pulse -i default -sample_rate 44100 -channels 1 \
-#       -codec:v h264 -preset ultrafast -tune stillimage -crf 32 -r 10 \
-#       -codec:a libvorbis -qscale:a 0 -ac 1 -ar 44100 \
-#       ${output}.mp4
-
 ffmpeg -y \
        -f x11grab -s ${width}x${heigth} -i ${DISPLAY} \
+       -f pulse -i default -sample_rate 44100 -channels 1 \
        -codec:v h264 -preset ultrafast -tune stillimage -crf 32 -r 10 \
+       -codec:a mp3 -qscale:a 0 -ac 1 -ar 44100 \
        ${output}.mp4
+
+# FIXME libvorbis causes wrong visual audio sync in kdenlive :(
+#	-codec:a libvorbis -qscale:a 0 -ac 1 -ar 44100 \
+
+#ffmpeg -y \
+#       -f x11grab -s ${width}x${heigth} -i ${DISPLAY} \
+#       -codec:v h264 -preset ultrafast -tune stillimage -crf 32 -r 10 \
+#       "${output}.mp4"
 
