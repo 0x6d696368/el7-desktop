@@ -46,13 +46,26 @@ After installation you need to setup the installation by running some of the
 * `02_install_vboxguest.sh`: for installing the Virtualbox guest additions (virtual installation)
 * `03_install_apps.sh`: install main set of applications that I use (only from main CentOS repos)
 * `04_install_apps.sh`: install main set of applications that I use (including from EPEL)
-* `05_install_apps.sh`: install main set of applications that I use (including from nux-dextop)
+* `05_install_apps.sh`: install main set of applications that I use (including from nux-dextop and external sources)
 * `06_update_openvpn.sh`: set SElinux stuff when you update OpenVPN config
 * `07_{install,update}_virtualbox.sh`: install  VirtualBox and update/rebuild DKMS (needed after kernel updates)
 * `08_{install,update}_kernel-ml.sh`: install and update mainline kernel from the elrepo.org repository
 
 
 ## Stupid fixes
+
+### Calibrate touch screen
+
+Requires: `05_install_apps.sh` (for `xinput_calibrator`)
+
+Run:
+
+```
+xinput_calibrator
+```
+
+Follow the instructions. Then copy the calibration to `/etc/X11/xorg.conf.d/99-calibration.conf`.
+
 
 ### Set default applications in terminal
 
