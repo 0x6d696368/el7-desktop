@@ -18,7 +18,9 @@ sudo yum -y install \
 	pwgen \
 	pass \
 	darktable \
-	pandoc texlive-latex libreoffice wkhtmltopdf
+	pandoc wkhtmltopdf msttcore-fonts-installer \
+	texlive-latex \
+	libreoffice
 
 xdg-mime default zathura.desktop application/pdf                                 
 
