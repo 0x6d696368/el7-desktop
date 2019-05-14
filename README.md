@@ -60,7 +60,7 @@ Requires: `05_install_apps.sh` (for `xinput_calibrator`)
 
 Run:
 
-```
+```bash
 xinput_calibrator
 ```
 
@@ -69,7 +69,7 @@ Follow the instructions. Then copy the calibration to `/etc/X11/xorg.conf.d/99-c
 
 ### Set default applications in terminal
 
-```
+```bash
 exo-preferred-applications
 ```
 
@@ -129,7 +129,7 @@ exo-preferred-applications
 
 ### Format
 
-```
+```bash
 sudo cryptsetup luksFormat /dev/sdb1
 sudo cryptsetup luksOpen /dev/sdb1 new
 sudo mkfs.ext4 /dev/mapper/new [-L <disk label>]
@@ -139,13 +139,13 @@ sudo cryptsetup luksClose new
 
 ### Add key
 
-```
+```bash
 sudo cryptsetup luksAddKey /dev/sdb1
 ```
 
 ### Mount cloned drive (that has UUID of already mounted drive)
 
-```
+```bash
 sudo cryptsetup luksOpen /dev/sdb1 old
 sudo mount -o nouuid /dev/mapper/old ~/mnt
 # do stuff
@@ -153,30 +153,71 @@ sudo umount ~/mnt
 sudo cryptsetup luksClose old
 ```
 
+### `e2fsck`
+
+```bash
+sudo cryptsetup luksOpen /dev/sdb1 dev2fsck
+sudo e2fsck -f /dev/mapper/dev2fsck
+sudo cryptsetup luksClose dev2fsck
+```
+
 ## GPG
 
 List keys:
 
-```
+```bash
 gpg --list-keys
 ```
 
 Generate key:
 
-```
+```bash
 gpg --default-new-key-algo rsa4096 --gen-key
 ```
 
 Export key:
 
-```
+```bash
 gpg -a --export <keyid | email> > pgp.asc
 ```
 
 See info on key without importing:
 
-```
+```bash
 gpg pgp.asc
+```
+
+## SMART
+
+Check if SMART is supported:
+
+```bash
+sudo smartctl -i /dev/sda | grep "SMART support"
+```
+
+Check what tests are supported and how long they will take:
+
+```bash
+sudo smartctl -c /dev/sda | grep "Short\|Extended\|Conveyance" -A 1
+```
+
+Run a test:
+
+```bash
+sudo smartctl -t <short|long|conveyance|select> /dev/sda
+```
+
+View test results:
+
+```bash
+sudo smartctl -a /dev/sda # all
+sudo smartctl -l selftest /dev/sda # only selectiv
+```
+
+Print all infos (including test results) for a drive (nuclear option):
+
+```bash
+sudo smartctl -x /dev/sda
 ```
 
 ## Misc
@@ -185,7 +226,7 @@ gpg pgp.asc
 
 To transfer links and other data to a smartphone use:
 
-```
+```bash
 echo "https://thislinkintoa.qr" | qrencode -t utf8
 ```
 
@@ -193,7 +234,7 @@ echo "https://thislinkintoa.qr" | qrencode -t utf8
 
 Make sure to check the integrity of the repository keys!
 
-```
+```bash
 $ for i in $(ls /etc/pki/rpm-gpg/RPM-GPG-KEY-*); do gpg --with-fingerprint "${i}"; done
 pub  4096R/0x24C6A8A7F4A80EB5 2014-06-23 CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>
       Key fingerprint = 6341 AB27 53D7 8A78 A7C2  7BB1 24C6 A8A7 F4A8 0EB5
