@@ -189,8 +189,9 @@ bindsym $mod+b exec i3-nagbar -m "Display brightness: $(expr \( $(cat /sys/class
 bindsym $mod+Ctrl+l exec i3lock -i ~/.i3/lock.png -t
 
 bindsym $mod+m move workspace to output left
-#bindsym $mod+m move workspace to output up
+bindsym $mod+n move workspace to output up
 bindsym $mod+Shift+m move container to output left
+bindsym $mod+Shift+n move container to output up
 
 bindsym $mod+o exec xrandr --output LVDS1 --auto
 
