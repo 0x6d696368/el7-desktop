@@ -20,7 +20,7 @@ sudo yum -y install \
 	darktable \
 	pandoc wkhtmltopdf msttcore-fonts-installer \
 	texlive-latex \
-	libreoffice \
+	libreoffice libreoffice-langpack-en libreoffice-langpack-de \
 	exo
 
 xdg-mime default zathura.desktop application/pdf                                 
