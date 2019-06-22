@@ -220,6 +220,26 @@ Print all infos (including test results) for a drive (nuclear option):
 sudo smartctl -x /dev/sda
 ```
 
+### Check a drives health
+
+If
+
+```
+sudo smartctl -a /dev/sdb | grep "^\(  5\|187\|188\|197\|198\|  5\|195\|199\|179\|182\)" | grep -v "0$"
+```
+
+returns a SMART attribute with a value above 0, this indicates a (imminent) drive failure.
+
+On SSDs
+
+```
+sudo smartctl -a /dev/sdb | grep "^\(177\)"
+```
+
+gives the wear level count. This decreases from 100% for a new drive to 0% for a end-of-life
+drive.
+
+
 ## Misc
 
 ### Generate QR code

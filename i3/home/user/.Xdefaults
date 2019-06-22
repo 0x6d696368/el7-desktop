@@ -68,7 +68,7 @@ URxvt*foreground:                     #ffffff
 ! URxvt*borderColor:                    color
 ! URxvt*iconFile:                       file
 !URxvt*font:                          -*-fixed-*-*-*-*-10-*-*-*-*-*-*-*
-URxvt*font:  xft:DejaVu Sans Mono:size=7
+URxvt*font:  xft:DejaVu Sans Mono:size=9
 ! URxvt*font:                           fontname
 ! URxvt*boldFont:                       fontname
 ! URxvt*italicFont:                     fontname
