@@ -35,7 +35,7 @@ setlocal spell spelllang=en_us,de_de
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 set background=dark
-colorscheme default
+colorscheme ron
 set textwidth=0
 set formatoptions-=
 set colorcolumn=81

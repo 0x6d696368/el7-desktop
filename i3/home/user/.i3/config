@@ -124,12 +124,12 @@ bindsym $mod+Shift+r restart
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'What should I do?' -b 'Power-off' 'systemctl poweroff' -b 'Suspend' 'systemctl suspend' -b 'Hibernate' 'systemctl hibernate' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'
 
-set $exit "Exit? [s]hutdown [r]eboot s[u]spend [h]ibernate [l]ock log[o]out"
+set $exit "Exit? [p]oweroff [r]eboot [s]uspend [h]ibernate [l]ock log[o]out"
 
 mode $exit {
-	bindsym s exec i3lock -i ~/.i3/lock.png -t && systemctl poweroff, mode "default"
+	bindsym p exec i3lock -i ~/.i3/lock.png -t && systemctl poweroff, mode "default"
 	bindsym r exec i3lock -i ~/.i3/lock.png -t && systemctl reboot, mode "default"
-	bindsym u exec i3lock -i ~/.i3/lock.png -t && systemctl suspend, mode "default"
+	bindsym s exec i3lock -i ~/.i3/lock.png -t && systemctl suspend, mode "default"
 	bindsym h exec i3lock -i ~/.i3/lock.png -t && systemctl hibernate, mode "default"
 	bindsym o exec i3lock -i ~/.i3/lock.png -t && i3-msg exit, mode "default"
 	bindsym l exec i3lock -i ~/.i3/lock.png -t, mode "default"
@@ -188,12 +188,13 @@ bindsym $mod+b exec i3-nagbar -m "Display brightness: $(expr \( $(cat /sys/class
 
 bindsym $mod+Ctrl+l exec i3lock -i ~/.i3/lock.png -t
 
-bindsym $mod+m move workspace to output left
-bindsym $mod+n move workspace to output up
-bindsym $mod+Shift+m move container to output left
-bindsym $mod+Shift+n move container to output up
+bindsym $mod+n move workspace to output left
+bindsym $mod+Shift+n move container to output left
+bindsym $mod+m move workspace to output up
+bindsym $mod+Shift+m move container to output up
 
-bindsym $mod+o exec xrandr --output LVDS1 --auto
+#bindsym $mod+o exec xrandr --output LVDS1 --auto
+bindsym $mod+o exec xrandr --output LVDS1 --auto --output VGA1 --mode 1920x1080 --above LVDS1
 
 bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+1%'
 bindsym Shift+XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+10%'

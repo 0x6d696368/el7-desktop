@@ -10,123 +10,21 @@ sudo systemctl set-default graphical.target # boots to i3 by default
 # sudo systemctl isolate graphical.target # starts i3 from terminal
 
 # COPY CONFIGURATION FILES
+mkdir -p /home
+mkdir -p /home/user
+mkdir -p /home/user/.i3
+mkdir -p /home/user/.gnupg
+mkdir -p /home/user/screencast
 mkdir -p /etc
 mkdir -p /etc/X11
 mkdir -p /etc/X11/xorg.conf.d
 mkdir -p /etc/udev
 mkdir -p /etc/udev/rules.d
-mkdir -p /home
-mkdir -p /home/user
-mkdir -p /home/user/.gnupg
-mkdir -p /home/user/.i3
-mkdir -p /home/user/screencast
-cat > /etc/X11/xorg.conf.d/00-keyboard.conf << PASTECONFIGURATIONFILE
-# Read and parsed by systemd-localed. It's probably wise not to edit this file
-# manually too freely.
-Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "us,de"
-	Option "XkbOptions" "grp:caps_switch"
-EndSection
-PASTECONFIGURATIONFILE
-cat > /etc/X11/xorg.conf.d/10-evdev.conf << PASTECONFIGURATIONFILE
-Section "InputClass"
-	Identifier "touchpad"
-	MatchIsPointer "on"
-	Option "Emulate3Buttons" "on"
-EndSection
-PASTECONFIGURATIONFILE
-cat > /etc/udev/rules.d/70-u2f.rules << PASTECONFIGURATIONFILE
-# Copyright (C) 2013-2015 Yubico AB
-#
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation; either version 2.1, or (at your option)
-# any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
-# General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-# this udev file should be used with udev 188 and newer
-ACTION!="add|change", GOTO="u2f_end"
-
-# Yubico YubiKey
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120|0200|0402|0403|0406|0407|0410", TAG+="uaccess"
-
-# Happlink (formerly Plug-Up) Security KEY
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2581", ATTRS{idProduct}=="f1d0", TAG+="uaccess"
-
-# Neowave Keydo and Keydo AES
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e0d", ATTRS{idProduct}=="f1d0|f1ae", TAG+="uaccess"
-
-# HyperSecu HyperFIDO
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="096e|2ccf", ATTRS{idProduct}=="0880", TAG+="uaccess"
-
-# Feitian ePass FIDO, BioPass FIDO2
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="096e", ATTRS{idProduct}=="0850|0852|0853|0854|0856|0858|085a|085b|085d", TAG+="uaccess"
-
-# JaCarta U2F
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="24dc", ATTRS{idProduct}=="0101", TAG+="uaccess"
-
-# U2F Zero
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8acf", TAG+="uaccess"
-
-# VASCO SeccureClick
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1a44", ATTRS{idProduct}=="00bb", TAG+="uaccess"
-
-# Bluink Key
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2abe", ATTRS{idProduct}=="1002", TAG+="uaccess"
-
-# Thetis Key
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1ea8", ATTRS{idProduct}=="f025", TAG+="uaccess"
-
-# Nitrokey FIDO U2F
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="20a0", ATTRS{idProduct}=="4287", TAG+="uaccess"
-
-# Google Titan U2F
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="18d1", ATTRS{idProduct}=="5026", TAG+="uaccess"
-
-# Tomu board + chopstx U2F
-KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="cdab", TAG+="uaccess"
-
-LABEL="u2f_end"
-PASTECONFIGURATIONFILE
-cat > /home/user/.gnupg/gpg.conf << PASTECONFIGURATIONFILE
-default-key 12345678
-personal-digest-preferences SHA512
-cert-digest-algo SHA512
-digest-algo SHA512
-cipher-algo AES256
-default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed
-no-version
-keyid-format 0xLONG
-use-agent
-force-mdc
-disable-cipher-algo 3DES CAST5 
-#weak-digest 
-PASTECONFIGURATIONFILE
-cat > /home/user/.gnupg/gpg-agent.conf << PASTECONFIGURATIONFILE
-# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
-# default-cache-ttl 60
-# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
-# max-cache-ttl 600
-
-###+++--- GPGConf ---+++###
-default-cache-ttl 300
-max-cache-ttl 3000
-###+++--- GPGConf ---+++### Mon Mar 11 03:41:39 2019 CET
-# GPGConf edited this configuration file.
-# It will disable options before this marked block, but it will
-# never change anything below these lines.
-PASTECONFIGURATIONFILE
-cat > /home/user/.i3/brightness.sh << PASTECONFIGURATIONFILE
-expr \\( \$(cat /sys/class/backlight/intel_backlight/brightness) \\* 100 \\) \\/ \\( \$(cat /sys/class/backlight/intel_backlight/max_brightness) \\* 1 \\)
+cat > /home/user/.i3/lock.sh << PASTECONFIGURATIONFILE
+#!/bin/bash
+import -window root /tmp/screenlock.png
+i3lock -p win -i /tmp/screenlock.png  -d -u
+rm /tmp/screenlock.png
 PASTECONFIGURATIONFILE
 cat > /home/user/.i3/i3status.conf << PASTECONFIGURATIONFILE
 # i3status configuration file.
@@ -216,17 +114,6 @@ volume master {
 #}
 
 PASTECONFIGURATIONFILE
-cat > /home/user/.i3/i3status.sh << PASTECONFIGURATIONFILE
-#!/bin/sh
-# shell script to prepend i3status with more stuff
-
-i3status -c ~/.i3/i3status.conf | while :
-do
-        read line
-	brightness=\$(expr \\( \$(cat /sys/class/backlight/intel_backlight/brightness) \\* 100 \\) \\/ \\( \$(cat /sys/class/backlight/intel_backlight/max_brightness) \\* 1 \\))
-        echo "\$line | \${brightness}" || exit 1
-done
-PASTECONFIGURATIONFILE
 base64 -d > /home/user/.i3/lock.png << PASTECONFIGURATIONFILE
 iVBORw0KGgoAAAANSUhEUgAAAGQAAAAyCAYAAACqNX6+AAABqklEQVR42u2Zz0qUURiHnxFFvQYX
 4hCB06KFC1sF0kXUqqiFeAWCFF1AuvAG7EIkb0BbGITB1CKEbB3kn92vzREOH9+nI7hw8nmGd3HO
@@ -238,18 +125,19 @@ nZa6A8Jxef5Ne8gyYf8+9pC242OKsEX4TTghbBImG699Q/hSjpRh6Rltm75A+FFt7HVHVggXhCPC
 BmFivIX08B9DvxiKQhQiClGIKEQhohCFiEJEIQoRhShEFKIQUYhCRCGiEIWIQhQiClGIKEQhohBR
 iEJEIePMP21JUcdoUW35AAAAAElFTkSuQmCC
 PASTECONFIGURATIONFILE
-cat > /home/user/.i3/lock.sh << PASTECONFIGURATIONFILE
-#!/bin/bash
-import -window root /tmp/screenlock.png
-i3lock -p win -i /tmp/screenlock.png  -d -u
-rm /tmp/screenlock.png
+cat > /home/user/.i3/brightness.sh << PASTECONFIGURATIONFILE
+expr \\( \$(cat /sys/class/backlight/intel_backlight/brightness) \\* 100 \\) \\/ \\( \$(cat /sys/class/backlight/intel_backlight/max_brightness) \\* 1 \\)
 PASTECONFIGURATIONFILE
-cat > /home/user/.i3/pngofscreen.sh << PASTECONFIGURATIONFILE
-#!/bin/bash
-# old heavy version depending on imagemagick
-import -window root "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
-# new slimmer version does not work: https://github.com/i3/i3/issues/2435
-#xwd -silent -name root | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
+cat > /home/user/.i3/i3status.sh << PASTECONFIGURATIONFILE
+#!/bin/sh
+# shell script to prepend i3status with more stuff
+
+i3status -c ~/.i3/i3status.conf | while :
+do
+        read line
+	brightness=\$(expr \\( \$(cat /sys/class/backlight/intel_backlight/brightness) \\* 100 \\) \\/ \\( \$(cat /sys/class/backlight/intel_backlight/max_brightness) \\* 1 \\))
+        echo "\$line | \${brightness}" || exit 1
+done
 PASTECONFIGURATIONFILE
 cat > /home/user/.i3/pngofwindow.sh << PASTECONFIGURATIONFILE
 #!/bin/bash
@@ -257,6 +145,13 @@ cat > /home/user/.i3/pngofwindow.sh << PASTECONFIGURATIONFILE
 #import -window \`xdotool getactivewindow\` "~/screenshot_\$(xdotool getwindowname \`xdotool getactivewindow\`)_\$(date +%Y%m%dT%H%M%S%z).png"
 xwid=\$(xdotool getactivewindow)
 xwd -frame -silent -id "\${xwid}" | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\$(xdotool getwindowname "\${xwid}")_\$(date +%Y%m%dT%H%M%S%z).png"
+PASTECONFIGURATIONFILE
+cat > /home/user/.i3/pngofscreen.sh << PASTECONFIGURATIONFILE
+#!/bin/bash
+# old heavy version depending on imagemagick
+import -window root "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
+# new slimmer version does not work: https://github.com/i3/i3/issues/2435
+#xwd -silent -name root | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
 PASTECONFIGURATIONFILE
 cat > /home/user/.i3/config << PASTECONFIGURATIONFILE
 # This file has been auto-generated by i3-config-wizard(1).
@@ -385,12 +280,12 @@ bindsym \$mod+Shift+r restart
 # bindsym \$mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #bindsym \$mod+Shift+e exec "i3-nagbar -t warning -m 'What should I do?' -b 'Power-off' 'systemctl poweroff' -b 'Suspend' 'systemctl suspend' -b 'Hibernate' 'systemctl hibernate' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'
 
-set \$exit "Exit? [s]hutdown [r]eboot s[u]spend [h]ibernate [l]ock log[o]out"
+set \$exit "Exit? [p]oweroff [r]eboot [s]uspend [h]ibernate [l]ock log[o]out"
 
 mode \$exit {
-	bindsym s exec i3lock -i ~/.i3/lock.png -t && systemctl poweroff, mode "default"
+	bindsym p exec i3lock -i ~/.i3/lock.png -t && systemctl poweroff, mode "default"
 	bindsym r exec i3lock -i ~/.i3/lock.png -t && systemctl reboot, mode "default"
-	bindsym u exec i3lock -i ~/.i3/lock.png -t && systemctl suspend, mode "default"
+	bindsym s exec i3lock -i ~/.i3/lock.png -t && systemctl suspend, mode "default"
 	bindsym h exec i3lock -i ~/.i3/lock.png -t && systemctl hibernate, mode "default"
 	bindsym o exec i3lock -i ~/.i3/lock.png -t && i3-msg exit, mode "default"
 	bindsym l exec i3lock -i ~/.i3/lock.png -t, mode "default"
@@ -449,12 +344,13 @@ bindsym \$mod+b exec i3-nagbar -m "Display brightness: \$(expr \\( \$(cat /sys/c
 
 bindsym \$mod+Ctrl+l exec i3lock -i ~/.i3/lock.png -t
 
-bindsym \$mod+m move workspace to output left
-bindsym \$mod+n move workspace to output up
-bindsym \$mod+Shift+m move container to output left
-bindsym \$mod+Shift+n move container to output up
+bindsym \$mod+n move workspace to output left
+bindsym \$mod+Shift+n move container to output left
+bindsym \$mod+m move workspace to output up
+bindsym \$mod+Shift+m move container to output up
 
-bindsym \$mod+o exec xrandr --output LVDS1 --auto
+#bindsym \$mod+o exec xrandr --output LVDS1 --auto
+bindsym \$mod+o exec xrandr --output LVDS1 --auto --output VGA1 --mode 1920x1080 --above LVDS1
 
 bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+1%'
 bindsym Shift+XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+10%'
@@ -483,6 +379,34 @@ exec --no-startup-id dispwin ~/.i3/display.icc
 exec_always --no-startup-id xsetwacom --set 10 area 246 36 3959 3846
 
 
+PASTECONFIGURATIONFILE
+cat > /home/user/.gnupg/gpg.conf << PASTECONFIGURATIONFILE
+default-key 12345678
+personal-digest-preferences SHA512
+cert-digest-algo SHA512
+digest-algo SHA512
+cipher-algo AES256
+default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed
+no-version
+keyid-format 0xLONG
+use-agent
+force-mdc
+disable-cipher-algo 3DES CAST5 
+#weak-digest 
+PASTECONFIGURATIONFILE
+cat > /home/user/.gnupg/gpg-agent.conf << PASTECONFIGURATIONFILE
+# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
+# default-cache-ttl 60
+# GPGConf disabled this option here at Mon Mar 11 03:41:39 2019 CET
+# max-cache-ttl 600
+
+###+++--- GPGConf ---+++###
+default-cache-ttl 300
+max-cache-ttl 3000
+###+++--- GPGConf ---+++### Mon Mar 11 03:41:39 2019 CET
+# GPGConf edited this configuration file.
+# It will disable options before this marked block, but it will
+# never change anything below these lines.
 PASTECONFIGURATIONFILE
 cat > /home/user/.bashrc << PASTECONFIGURATIONFILE
 # .bashrc
@@ -597,7 +521,7 @@ setlocal spell spelllang=en_us,de_de
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 set background=dark
-colorscheme default
+colorscheme ron
 set textwidth=0
 set formatoptions-=
 set colorcolumn=81
@@ -817,6 +741,83 @@ URxvt.keysym.Shift-Down: command:\\033]721;1\\007
 ! URxvt*tabbar-bg:                      colour
 ! URxvt*tabbar-fg:                      colour
 ! URxvt*url-launcher:                   strinig
+PASTECONFIGURATIONFILE
+cat > /etc/X11/xorg.conf.d/00-keyboard.conf << PASTECONFIGURATIONFILE
+# Read and parsed by systemd-localed. It's probably wise not to edit this file
+# manually too freely.
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "us,de"
+	Option "XkbOptions" "grp:caps_switch"
+EndSection
+PASTECONFIGURATIONFILE
+cat > /etc/X11/xorg.conf.d/10-evdev.conf << PASTECONFIGURATIONFILE
+Section "InputClass"
+	Identifier "touchpad"
+	MatchIsPointer "on"
+	Option "Emulate3Buttons" "on"
+EndSection
+PASTECONFIGURATIONFILE
+cat > /etc/udev/rules.d/70-u2f.rules << PASTECONFIGURATIONFILE
+# Copyright (C) 2013-2015 Yubico AB
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+# General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+# this udev file should be used with udev 188 and newer
+ACTION!="add|change", GOTO="u2f_end"
+
+# Yubico YubiKey
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120|0200|0402|0403|0406|0407|0410", TAG+="uaccess"
+
+# Happlink (formerly Plug-Up) Security KEY
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2581", ATTRS{idProduct}=="f1d0", TAG+="uaccess"
+
+# Neowave Keydo and Keydo AES
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1e0d", ATTRS{idProduct}=="f1d0|f1ae", TAG+="uaccess"
+
+# HyperSecu HyperFIDO
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="096e|2ccf", ATTRS{idProduct}=="0880", TAG+="uaccess"
+
+# Feitian ePass FIDO, BioPass FIDO2
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="096e", ATTRS{idProduct}=="0850|0852|0853|0854|0856|0858|085a|085b|085d", TAG+="uaccess"
+
+# JaCarta U2F
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="24dc", ATTRS{idProduct}=="0101", TAG+="uaccess"
+
+# U2F Zero
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8acf", TAG+="uaccess"
+
+# VASCO SeccureClick
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1a44", ATTRS{idProduct}=="00bb", TAG+="uaccess"
+
+# Bluink Key
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2abe", ATTRS{idProduct}=="1002", TAG+="uaccess"
+
+# Thetis Key
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1ea8", ATTRS{idProduct}=="f025", TAG+="uaccess"
+
+# Nitrokey FIDO U2F
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="20a0", ATTRS{idProduct}=="4287", TAG+="uaccess"
+
+# Google Titan U2F
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="18d1", ATTRS{idProduct}=="5026", TAG+="uaccess"
+
+# Tomu board + chopstx U2F
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="cdab", TAG+="uaccess"
+
+LABEL="u2f_end"
 PASTECONFIGURATIONFILE
 # COPY CONFIGURATION FILES
 
