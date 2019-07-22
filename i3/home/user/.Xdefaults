@@ -36,6 +36,28 @@
 ! URxvt*pointerBlank:                   boolean
 URxvt*background:                     #000000
 URxvt*foreground:                     #ffffff
+
+urxvt*foreground: white
+urxvt*background: black
+
+*color0:  #2E3436
+*color1:  #a40000
+*color2:  #4E9A06
+*color3:  #C4A000
+*color4:  #3465A4
+*color5:  #75507B
+*color6:  #ce5c00
+*color7:  #babdb9
+*color8:  #555753
+*color9:  #EF2929
+*color10: #8AE234
+*color11: #FCE94F
+*color12: #729FCF
+*color13: #AD7FA8
+*color14: #fcaf3e
+*color15: #EEEEEC
+
+
 ! URxvt*color0:                         color
 ! URxvt*color1:                         color
 ! URxvt*color2:                         color
@@ -67,8 +89,8 @@ URxvt*foreground:                     #ffffff
 ! URxvt*pointerColor2:                  color
 ! URxvt*borderColor:                    color
 ! URxvt*iconFile:                       file
-!URxvt*font:                          -*-fixed-*-*-*-*-10-*-*-*-*-*-*-*
-URxvt*font:  xft:DejaVu Sans Mono:size=7
+!URxvt*font:                          -*-*-*-*-*-*-10-*-*-*-*-*-*-*
+URxvt*font:  xft:DejaVu Sans Mono:size=9
 ! URxvt*font:                           fontname
 ! URxvt*boldFont:                       fontname
 ! URxvt*italicFont:                     fontname
