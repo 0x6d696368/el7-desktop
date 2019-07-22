@@ -10,6 +10,7 @@ sudo yum -y install \
 	zathura zathura-pdf-poppler zathura-ps \
 	net-tools \
 	pciutils \
+	systat \
 	usbutils \
 	polkit-gnome \
 	Thunar \
