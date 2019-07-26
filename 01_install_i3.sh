@@ -5,7 +5,7 @@ sudo echo "Thx"
 sudo yum -y update
 sudo yum -y install deltarpm epel-release
 sudo yum -y groupinstall "X Window System"
-sudo yum -y install i3 i3lock i3status lightdm rxvt-unicode gnome-terminal dejavu-*fonts NetworkManager NetworkManager-wifi NetworkManager-openvpn network-manager-applet NetworkManager-openvpn-gnome NetworkManager-tui xdotool xwd netpbm-progs xorg-x11-server-utils
+sudo yum -y install i3 i3lock i3status lightdm rxvt-unicode gnome-terminal dejavu-*fonts NetworkManager NetworkManager-wifi NetworkManager-openvpn network-manager-applet NetworkManager-openvpn-gnome NetworkManager-tui xdotool xwd netpbm-progs xorg-x11-server-utils gnome-screenshot
 sudo systemctl set-default graphical.target # boots to i3 by default
 # sudo systemctl isolate graphical.target # starts i3 from terminal
 
@@ -144,7 +144,10 @@ cat > /home/user/.i3/pngofwindow.sh << PASTECONFIGURATIONFILE
 # old heavy version depending on imagemagick
 #import -window \`xdotool getactivewindow\` "~/screenshot_\$(xdotool getwindowname \`xdotool getactivewindow\`)_\$(date +%Y%m%dT%H%M%S%z).png"
 xwid=\$(xdotool getactivewindow)
-xwd -frame -silent -id "\${xwid}" | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\$(xdotool getwindowname "\${xwid}")_\$(date +%Y%m%dT%H%M%S%z).png"
+windowname=\$(xdotool getwindowname "\${xwid}" | sed 's/[^A-Za-z0-9]/_/g')
+#xwd -frame -silent -id "\${xwid}" | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\${windowname}_\$(date +%Y%m%dT%H%M%S%z).png"
+# new with gnome-screenshot
+gnome-screenshot -w -f "\$(cat ~/.globalpwd)/screenshot_\${windowname}_\$(date +%Y%m%dT%H%M%S%z).png"
 PASTECONFIGURATIONFILE
 cat > /home/user/.i3/pngofscreen.sh << PASTECONFIGURATIONFILE
 #!/bin/bash
@@ -363,8 +366,9 @@ bindsym Shift+XF86MonBrightnessUp exec xbacklight -set 100 # set max birghtness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 1 # decrease screen brightness
 bindsym Shift+XF86MonBrightnessDown exec xbacklight -set 1 # set min brightness
 
-bindsym \$mod+p exec "~/.i3/pngofwindow.sh"
-bindsym \$mod+Shift+p exec "~/.i3/pngofscreen.sh"
+bindsym \$mod+p exec "~/.i3/pngofselection.sh"
+bindsym \$mod+Shift+p exec "~/.i3/pngofwindow.sh"
+bindsym \$mod+Ctrl+p exec "~/.i3/pngofscreens.sh"
 
 # set X11 background to dark green
 exec_always --no-startup-id xsetroot -solid "#004400"
@@ -379,6 +383,21 @@ exec --no-startup-id dispwin ~/.i3/display.icc
 exec_always --no-startup-id xsetwacom --set 10 area 246 36 3959 3846
 
 
+PASTECONFIGURATIONFILE
+cat > /home/user/.i3/pngofselection.sh << PASTECONFIGURATIONFILE
+#!/bin/bash
+xwid=\$(xdotool getactivewindow)
+windowname=\$(xdotool getwindowname "\${xwid}" | sed 's/[^A-Za-z0-9]/_/g')
+gnome-screenshot -a -f "\$(cat ~/.globalpwd)/screenshot_\${windowname}_\$(date +%Y%m%dT%H%M%S%z).png"
+PASTECONFIGURATIONFILE
+cat > /home/user/.i3/pngofscreens.sh << PASTECONFIGURATIONFILE
+#!/bin/bash
+# old heavy version depending on imagemagick
+#import -window root "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
+# new slimmer version does not work: https://github.com/i3/i3/issues/2435
+#xwd -silent -name root | xwdtopnm | pnmtopng > "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
+# new gnome-screenshot version
+gnome-screenshot -f "\$(cat ~/.globalpwd)/screenshot_\$(date +%Y%m%dT%H%M%S%z).png"
 PASTECONFIGURATIONFILE
 cat > /home/user/.gnupg/gpg.conf << PASTECONFIGURATIONFILE
 default-key 12345678

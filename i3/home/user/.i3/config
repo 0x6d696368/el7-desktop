@@ -207,8 +207,9 @@ bindsym Shift+XF86MonBrightnessUp exec xbacklight -set 100 # set max birghtness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 1 # decrease screen brightness
 bindsym Shift+XF86MonBrightnessDown exec xbacklight -set 1 # set min brightness
 
-bindsym $mod+p exec "~/.i3/pngofwindow.sh"
-bindsym $mod+Shift+p exec "~/.i3/pngofscreen.sh"
+bindsym $mod+p exec "~/.i3/pngofselection.sh"
+bindsym $mod+Shift+p exec "~/.i3/pngofwindow.sh"
+bindsym $mod+Ctrl+p exec "~/.i3/pngofscreens.sh"
 
 # set X11 background to dark green
 exec_always --no-startup-id xsetroot -solid "#004400"
