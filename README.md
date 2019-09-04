@@ -1,4 +1,4 @@
-# CentOS 7 desktop install
+# CENTOS 7 DESKTOP SCRIPTS
 
 ## BASE INSTALL
 
@@ -52,9 +52,7 @@ After installation you need to setup the installation by running some of the
 * `08_{install,update}_kernel-ml.sh`: install and update mainline kernel from the elrepo.org repository
 
 
-## Stupid fixes
-
-### Calibrate touch screen
+## Calibrate touch screen
 
 Requires: `05_install_apps.sh` (for `xinput_calibrator`)
 
@@ -67,13 +65,13 @@ xinput_calibrator
 Follow the instructions. Then copy the calibration to `/etc/X11/xorg.conf.d/99-calibration.conf`.
 
 
-### Set default applications in terminal
+## Set default applications in terminal
 
 ```bash
 exo-preferred-applications
 ```
 
-### Firefox
+## Firefox
 
 * `about:config`
 	* `keyword.enabled` = `false`
@@ -100,7 +98,7 @@ exo-preferred-applications
 	* HTTPS Everywhere
 	* Offline QR Code [optional]
 
-### Thunderbird
+## Thunderbird
 
 * Add-ons:
 	* Enigmail

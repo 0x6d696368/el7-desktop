@@ -15,6 +15,7 @@ mkdir -p /home/user
 mkdir -p /home/user/.i3
 mkdir -p /home/user/.gnupg
 mkdir -p /home/user/screencast
+mkdir -p /home/user/.config
 mkdir -p /etc
 mkdir -p /etc/X11
 mkdir -p /etc/X11/xorg.conf.d
@@ -502,58 +503,6 @@ howto() {
 
 
 PASTECONFIGURATIONFILE
-cat > /home/user/.vimrc << PASTECONFIGURATIONFILE
-set history=700
-
-set autoread
-
-set tabstop=8
-set wrap
-
-set nolbr
-set textwidth=80
-
-set ignorecase
-
-set nobackup
-set nowb
-"set noswapfile
-
-"noremap <Up> <Nop>
-"noremap <Down> <Nop>
-"noremap <Left> <Nop>
-"noremap <Right> <Nop>
-
-set hlsearch
-
-set lazyredraw
-
-" no sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-"set tm=500
-
-syntax enable
-setlocal spell spelllang=en_us,de_de
-
-autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
-
-set background=dark
-colorscheme ron
-set textwidth=0
-set formatoptions-=
-set colorcolumn=81
-hi ColorColumn ctermbg=8 
-hi SpellBad ctermbg=1
-hi SpellLocal ctermbg=17
-"--------------------------------------------------------------------------------------------------------------
-
-"ctags
-set tags=./tags;
-
-
-PASTECONFIGURATIONFILE
 cat > /home/user/screencast/README.md << PASTECONFIGURATIONFILE
 # Screenkey
 
@@ -566,21 +515,53 @@ cat > /home/user/screencast/README.md << PASTECONFIGURATIONFILE
 PASTECONFIGURATIONFILE
 cat > /home/user/screencast/screencast.sh << PASTECONFIGURATIONFILE
 #!/bin/bash
+monitor="primary"
+
+OPTIND=1 
+while getopts "h?d:" opt; do
+	case "\$opt" in
+	h|\\?)
+		echo "usage: \${0} [-d XRANDR MONITOR NAME] [recording name]"
+		exit 0;
+	;;
+	d)
+		monitor="\$OPTARG"
+	;;
+	esac
+done
+
+shift \$((OPTIND-1))
+[ "\${1:-}" = "--" ] && shift
+
 if [ "\$1" ]; then
 	output="\$1"
 else
 	output="\$(date +%Y%m%dT%H%M%S%z)"
 fi
-width=\$(xrandr | head -n 1 | awk '{print \$8}')
-heigth=\$(xrandr | head -n 1 | awk '{print \$10}' | awk 'gsub(",\$","")')
+
+
+crop=\$(xrandr | grep "\${connected}" | grep "\${monitor}")
+if [ -z "\${crop}" ]; then
+	echo "ERROR: Could not get display crop."
+	exit 1
+fi
+
+size=\$(echo "\${crop}" | head -n 1 | grep -o "[0-9]\\+x[0-9]\\++[0-9]\\++[0-9]\\+")
+width=\$(echo "\${size}" | sed 's/\\([0-9]\\+\\)x\\([0-9]\\+\\)+\\([0-9]\\+\\)+\\([0-9]\\+\\)/\\1/g')
+heigth=\$(echo "\${size}" | sed 's/\\([0-9]\\+\\)x\\([0-9]\\+\\)+\\([0-9]\\+\\)+\\([0-9]\\+\\)/\\2/g')
+xoffset=\$(echo "\${size}" | sed 's/\\([0-9]\\+\\)x\\([0-9]\\+\\)+\\([0-9]\\+\\)+\\([0-9]\\+\\)/\\3/g')
+yoffset=\$(echo "\${size}" | sed 's/\\([0-9]\\+\\)x\\([0-9]\\+\\)+\\([0-9]\\+\\)+\\([0-9]\\+\\)/\\4/g')
+
+~/github/screenkey/screenkey -p fixed --persist -g \$(expr \${width} - 300)x20+\$(expr \${xoffset} + 300)+\$(expr \${yoffset} + \${heigth} - 20) &
+SCREENKEY_PID=\$!
 
 echo "Recording will start in 1 second ..."
 
 sleep 1
 
 ffmpeg -y \\
-       -f x11grab -s \${width}x\${heigth} -i \${DISPLAY} \\
-       -f pulse -i default -sample_rate 44100 -channels 1 \\
+       -f x11grab -s \${width}x\${heigth} -i \${DISPLAY}+\${xoffset},\${yoffset} \\
+       -f pulse -thread_queue_size 32 -i default -sample_rate 44100 -channels 1 \\
        -codec:v h264 -preset ultrafast -tune stillimage -crf 32 -r 10 \\
        -codec:a mp3 -qscale:a 0 -ac 1 -ar 44100 \\
        \${output}.mp4
@@ -592,6 +573,42 @@ ffmpeg -y \\
 #       -f x11grab -s \${width}x\${heigth} -i \${DISPLAY} \\
 #       -codec:v h264 -preset ultrafast -tune stillimage -crf 32 -r 10 \\
 #       "\${output}.mp4"
+
+kill \${SCREENKEY_PID}
+
+
+PASTECONFIGURATIONFILE
+cat > /home/user/screencast/convert_for_web.sh << PASTECONFIGURATIONFILE
+#!/bin/bash
+
+if [[ \$# -lt 1 ]]; then
+	echo "Usage: \${0} <screencast.mp4> [start time] [end time]"
+	exit 1
+fi
+
+output=\$(echo \${1} | sed 's/\\.mp4\$/_web.mp4/g')
+
+if ! echo \${output} | grep -q "_web.mp4\$"; then
+	echo "ERROR: filename does not end with .mp4"
+	exit 1
+fi
+
+ss=""
+to=""
+
+if [[ \$# -ge 2 ]]; then
+	ss="-ss \${2}"
+fi
+if [[ \$# -ge 3 ]]; then
+	to="-to \${3}"
+fi
+
+ffmpeg -y -i "\${1}" \\
+	-codec:v h264 -preset fast -profile:v baseline -level 3.0 -tune stillimage \\
+	-movflags +faststart -pix_fmt yuv420p -crf 40 -r 10 \\
+	-codec:a libfdk_aac -ac 1 -ar 22050 -vbr 0 \\
+	\${ss} \${to} \${output}
+
 
 PASTECONFIGURATIONFILE
 cat > /home/user/.Xresources << PASTECONFIGURATIONFILE
@@ -760,6 +777,90 @@ URxvt.keysym.Shift-Down: command:\\033]721;1\\007
 ! URxvt*tabbar-bg:                      colour
 ! URxvt*tabbar-fg:                      colour
 ! URxvt*url-launcher:                   strinig
+PASTECONFIGURATIONFILE
+cat > /home/user/.config/gromit-mpx.cfg << PASTECONFIGURATIONFILE
+"red Pen" = PEN (size=3 color="red");
+"black Pen" = "red Pen" (color="black");
+"red Arrow" = "red Pen" (arrowsize=2);
+
+"big red Pen" = PEN (size=10 color="red");
+"big black Pen" = "big red Pen" (color="black");
+"black Arrow" = "red Arrow" (color="black");
+
+"green Marker" = RECOLOR (color="green" size=20);
+"big green Marker" = RECOLOR (color="green" size=75);
+
+"small Eraser" = ERASER (size=20);
+"big Eraser" = ERASER (size=75);
+ 
+"default" = "red Pen";
+"default"[CONTROL] = "black Pen";
+"default"[3] = "big red Pen";
+"default"[3+CONTROL] = "big black Pen";
+
+"default"[2] = "red Arrow";
+"default"[2+CONTROL] = "black Arrow";
+
+"default"[SHIFT] = "small Eraser";
+"default"[3+SHIFT] = "big Eraser";
+
+"default"[SHIFT+CONTROL] = "green Marker";
+"default"[3+SHIFT+CONTROL] = "big green Marker";
+
+PASTECONFIGURATIONFILE
+cat > /home/user/.vimrc << PASTECONFIGURATIONFILE
+set history=700
+
+set autoread
+
+set tabstop=8
+set wrap
+
+set nolbr
+set textwidth=80
+
+set clipboard=unnamedplus
+
+set ignorecase
+
+set nobackup
+set nowb
+"set noswapfile
+
+"noremap <Up> <Nop>
+"noremap <Down> <Nop>
+"noremap <Left> <Nop>
+"noremap <Right> <Nop>
+
+set hlsearch
+
+set lazyredraw
+
+" no sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+"set tm=500
+
+syntax enable
+setlocal spell spelllang=en_us,de_de
+
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+
+set background=dark
+colorscheme ron
+set textwidth=0
+set formatoptions-=
+set colorcolumn=81
+hi ColorColumn ctermbg=8 
+hi SpellBad ctermbg=1
+hi SpellLocal ctermbg=17
+"--------------------------------------------------------------------------------------------------------------
+
+"ctags
+set tags=./tags;
+
+
 PASTECONFIGURATIONFILE
 cat > /etc/X11/xorg.conf.d/00-keyboard.conf << PASTECONFIGURATIONFILE
 # Read and parsed by systemd-localed. It's probably wise not to edit this file

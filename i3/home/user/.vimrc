@@ -8,6 +8,8 @@ set wrap
 set nolbr
 set textwidth=80
 
+set clipboard=unnamedplus
+
 set ignorecase
 
 set nobackup
