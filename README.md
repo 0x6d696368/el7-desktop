@@ -238,15 +238,40 @@ gives the wear level count. This decreases from 100% for a new drive to 0% for a
 drive.
 
 
-## Misc
-
-### Generate QR code
+## Generate QR code
 
 To transfer links and other data to a smartphone use:
 
 ```bash
 echo "https://thislinkintoa.qr" | qrencode -t utf8
 ```
+
+## Evdev
+
+Disable middle button emulation (which causes 10 ms click delay):
+
+```
+xinput set-prop "PS/2 Generic Mouse" "Evdev Middle Button Emulation" "0"
+```
+
+Enable middle button wheel emulation (needed on weird laptops; but breaks middle button emulation):
+
+```
+# enable
+xinput set-prop "PS/2 Generic Mouse" "Evdev Wheel Emulation" "1"
+xinput set-prop "PS/2 Generic Mouse" "Evdev Wheel Emulation Button" "3"
+# disable
+xinput set-prop "PS/2 Generic Mouse" "Evdev Wheel Emulation" "0"
+```
+
+## Troubleshooting
+
+### Restart X
+
+```
+sudo systemctl restart display-manager
+```
+
 
 ## Key integrity
 
