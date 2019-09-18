@@ -264,6 +264,19 @@ xinput set-prop "PS/2 Generic Mouse" "Evdev Wheel Emulation Button" "3"
 xinput set-prop "PS/2 Generic Mouse" "Evdev Wheel Emulation" "0"
 ```
 
+## ctags
+
+Generate tags for current directory and subdirectories:
+
+```
+ctags -R .
+```
+
+Use in vim:
+
+- `Ctrl+]`: Jump to tag definition
+- `Ctrl+t`: Jump back
+
 ## Troubleshooting
 
 ### Restart X
