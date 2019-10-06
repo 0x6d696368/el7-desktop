@@ -96,7 +96,8 @@ exo-preferred-applications
 	* uBlock Origin
 	* NoScript
 	* HTTPS Everywhere
-	* Offline QR Code [optional]
+	* Cookie Quick Manager [optional]
+	* Stutter [optional, may be insecure]
 
 ## Thunderbird
 

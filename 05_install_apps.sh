@@ -9,3 +9,5 @@ sudo yum -y install vlc argyllcms xournal gromit-mpx arandr
 
 sudo yum -y install http://download-ib01.fedoraproject.org/pub/epel/6/i386/Packages/x/xinput_calibrator-0.7.5-3.el6.i686.rpm
 
+sudo yum-config-manager --enable cr
+
