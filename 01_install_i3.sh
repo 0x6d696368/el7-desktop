@@ -21,12 +21,6 @@ mkdir -p /etc/X11
 mkdir -p /etc/X11/xorg.conf.d
 mkdir -p /etc/udev
 mkdir -p /etc/udev/rules.d
-cat > /home/user/.i3/lock.sh << PASTECONFIGURATIONFILE
-#!/bin/bash
-import -window root /tmp/screenlock.png
-i3lock -p win -i /tmp/screenlock.png  -d -u
-rm /tmp/screenlock.png
-PASTECONFIGURATIONFILE
 cat > /home/user/.i3/i3status.conf << PASTECONFIGURATIONFILE
 # i3status configuration file.
 # see "man i3status" for documentation.

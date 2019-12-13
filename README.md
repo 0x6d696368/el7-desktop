@@ -101,11 +101,13 @@ exo-preferred-applications
 
 ## Thunderbird
 
-* Add-ons:
+### Add-ons
+
 	* Enigmail
 	* DKIMVerify
 
-* POP settings: 
+###  POP settings
+
 ![Thunderbird Settings](thunderbird/01.png)
 ![Thunderbird Settings](thunderbird/02.png)
 ![Thunderbird Settings](thunderbird/03.png)
@@ -123,6 +125,7 @@ exo-preferred-applications
 ![Thunderbird Settings](thunderbird/15.png)
 ![Thunderbird Settings](thunderbird/16.png)
 ![Thunderbird Settings](thunderbird/17.png)
+
 
 ## LUKS
 
@@ -277,6 +280,18 @@ Use in vim:
 
 - `Ctrl+]`: Jump to tag definition
 - `Ctrl+t`: Jump back
+
+## Install fonts
+
+- Locally:
+
+```
+mkdir -p ~/.local/share/fonts/
+mv <font.ttf> ~/.local/share/fonts/.
+fc-cache -f -v # clear and regenerate font cache
+fc-list | grep <font> # check for font
+```
+
 
 ## Troubleshooting
 
