@@ -11,3 +11,9 @@ sudo yum -y install http://download-ib01.fedoraproject.org/pub/epel/6/i386/Packa
 
 sudo yum-config-manager --enable cr
 
+# screenkey
+mkdir ~/github
+cd ~/github
+git clone https://gitlab.com/wavexx/screenkey.git
+
+
