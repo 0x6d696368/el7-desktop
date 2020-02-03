@@ -181,6 +181,7 @@ Export key:
 
 ```bash
 gpg -a --export <keyid | email> > pgp.asc
+gpg -a --export-secret-key <keyid | email> > pgp.asc
 ```
 
 See info on key without importing:
