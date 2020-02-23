@@ -349,6 +349,7 @@ bindsym \$mod+Shift+m move container to output up
 
 #bindsym \$mod+o exec xrandr --output LVDS1 --auto
 bindsym \$mod+o exec xrandr --output LVDS1 --auto --output VGA1 --mode 1920x1080 --above LVDS1
+bindsym \$mod+Shift+o exec xrandr --output LVDS1 --auto --output VGA1 --off
 
 bindsym XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+1%'
 bindsym Shift+XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+10%'
@@ -366,7 +367,7 @@ bindsym \$mod+Shift+p exec "~/.i3/pngofwindow.sh"
 bindsym \$mod+Ctrl+p exec "~/.i3/pngofscreens.sh"
 
 # set X11 background to dark green
-exec_always --no-startup-id xsetroot -solid "#004400"
+exec_always --no-startup-id xsetroot -solid "#001100"
 
 exec --no-startu-id gsettings set org.gnome.nm-applet disable-disconnected-notifications "true"
 exec --no-startu-id gsettings set org.gnome.nm-applet disable-connected-notifications "true"
