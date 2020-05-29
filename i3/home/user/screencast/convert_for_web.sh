@@ -23,7 +23,7 @@ if [[ $# -ge 3 ]]; then
 fi
 
 ffmpeg -y -i "${1}" \
-	-codec:v h264 -preset fast -profile:v baseline -level 3.0 -tune stillimage \
+	-codec:v h264 -preset veryslow -profile:v baseline -level 3.0 -tune stillimage \
 	-movflags +faststart -pix_fmt yuv420p -crf 40 -r 10 \
 	-codec:a libfdk_aac -ac 1 -ar 22050 -vbr 0 \
 	${ss} ${to} ${output}

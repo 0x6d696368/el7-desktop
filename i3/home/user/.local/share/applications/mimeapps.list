@@ -1,0 +1,8 @@
+[Default Applications]
+application/pdf=zathura.desktop
+application/http=firefox.desktop
+text/x-arduino=arduino-arduinoide.desktop
+images/png=eog.desktop
+images/jpg=eog.desktop
+images/jpeg=eog.desktop
+
