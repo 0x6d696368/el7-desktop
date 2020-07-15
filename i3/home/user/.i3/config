@@ -202,11 +202,20 @@ bindsym Shift+XF86AudioRaiseVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_
 bindsym XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-1%'
 bindsym Shift+XF86AudioLowerVolume exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-10%'
 bindsym XF86AudioMute exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '0%'
+bindsym $mod+F6 exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+1%'
+bindsym $mod+Shift+F6 exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '+10%'
+bindsym $mod+F5 exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-1%'
+bindsym $mod+Shift+F5 exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '-10%'
+bindsym $mod+F4 exec /usr/bin/pactl set-sink-volume @DEFAULT_SINK@ '0%'
 
 bindsym XF86MonBrightnessUp exec xbacklight -inc 1 # increase screen brightness
 bindsym Shift+XF86MonBrightnessUp exec xbacklight -set 100 # set max birghtness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 1 # decrease screen brightness
 bindsym Shift+XF86MonBrightnessDown exec xbacklight -set 1 # set min brightness
+bindsym $mod+F2 exec xbacklight -inc 1 # increase screen brightness
+bindsym $mod+Shift+F2 exec xbacklight -set 100 # set max birghtness
+bindsym $mod+F1 exec xbacklight -dec 1 # decrease screen brightness
+bindsym $mod+Shift+F1 exec xbacklight -set 1 # set min brightness
 
 bindsym $mod+p exec "~/.i3/pngofselection.sh"
 bindsym $mod+Shift+p exec "~/.i3/pngofwindow.sh"
