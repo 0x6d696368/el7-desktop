@@ -390,6 +390,7 @@ exec --no-startup-id dispwin ~/.i3/display.icc
 
 exec_always --no-startup-id xsetwacom --set 10 area 246 36 3959 3846
 
+for_window [class="Microsoft Teams - Preview" title="Microsoft Teams Notification"] floating enable
 
 PASTECONFIGURATIONFILE
 cat > ~/.i3/pngofselection.sh << PASTECONFIGURATIONFILE
@@ -889,6 +890,7 @@ text/x-arduino=arduino-arduinoide.desktop
 images/png=eog.desktop
 images/jpg=eog.desktop
 images/jpeg=eog.desktop
+x-scheme-handler/msteams=teams.desktop
 
 PASTECONFIGURATIONFILE
 cat > /etc/X11/xorg.conf.d/00-keyboard.conf << PASTECONFIGURATIONFILE

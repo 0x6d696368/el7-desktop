@@ -233,4 +233,5 @@ exec --no-startup-id dispwin ~/.i3/display.icc
 
 exec_always --no-startup-id xsetwacom --set 10 area 246 36 3959 3846
 
+for_window [class="Microsoft Teams - Preview" title="Microsoft Teams Notification"] floating enable
 
