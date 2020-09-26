@@ -488,9 +488,9 @@ make_prompt() {
 	fi
 	if [[ -f ~/.bash_privacy ]]
 	then
-		PS1='\\[\\e[1m\\][\$(get_exit \$?) 19840413T133742+0000 \\! \\# user@localhost \\w]\\n'\${VENV}'\$ \\[\\e[0m\\]'
+		PS1='\\[\\e[1m\\][\$(get_exit \$?) 19840413T133742+0000 \\! \\# user@localhost \\w ]\\n'\${VENV}'\$ \\[\\e[0m\\]'
 	else
-		PS1='\\[\\e[1m\\][\$(get_exit \$?) \$(get_time) \\! \\# \\u@\\h \\w]\\n'\${VENV}'\$ \\[\\e[0m\\]'
+		PS1='\\[\\e[1m\\][\$(get_exit \$?) \$(get_time) \\! \\# \\u@\\h \\w ]\\n'\${VENV}'\$ \\[\\e[0m\\]'
 	fi
 	# set environment variable for global pwd
 	echo "\$(pwd)" > ~/.globalpwd
