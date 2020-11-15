@@ -145,6 +145,18 @@ sudo cryptsetup luksClose new
 sudo cryptsetup luksAddKey /dev/sdb1
 ```
 
+### Remove key
+
+```bash
+sudo cryptsetup luksRemoveKey /dev/sdb1
+```
+
+### Check passphrase
+
+```bash
+sudo cryptsetup luksOpen --test-passphrase /dev/sdb1
+```
+
 ### Mount cloned drive (that has UUID of already mounted drive)
 
 ```bash
@@ -188,6 +200,13 @@ See info on key without importing:
 
 ```bash
 gpg pgp.asc
+```
+
+Delete key:
+
+```bash
+gpg --delete-secret-keys <keyid>
+gpg --delete-keys <keyid>
 ```
 
 ## SMART
@@ -248,8 +267,19 @@ drive.
 To transfer links and other data to a smartphone use:
 
 ```bash
-echo "https://thislinkintoa.qr" | qrencode -t utf8
+echo "https://github.com/0x6d696368/el7-desktop" | qrencode -t utf8
+qrencode -t utf8 "https://github.com/0x6d696368/el7-desktop"
 ```
+
+## Generate TOTP QR code
+
+To generate a TOTP QR code from a TOTP secret run (while replacing `ISSUER` and `USERNAME`):
+
+```
+qrencode -t utf8 "otpauth://totp/ISSUER:USERNAME?secret=$(cat)"
+```
+
+Then enter the secret on `stdin` (terminating input with CTRL+D).
 
 ## Evdev
 
@@ -302,6 +332,49 @@ fc-list | grep <font> # check for font
 sudo systemctl restart display-manager
 ```
 
+### Network
+
+#### Long fat network
+
+Default TCP settings:
+
+```
+sudo sysctl -w net.core.rmem_max=212992
+sudo sysctl -w net.core.wmem_max=212992
+sudo sysctl -w net.core.rmem_default=212992
+sudo sysctl -w net.core.wmem_default=212992
+sudo sysctl -w net.ipv4.tcp_rmem='4096 87380 6291456'
+sudo sysctl -w net.ipv4.tcp_wmem='4096 16384 4194304'
+sudo sysctl -w net.ipv4.tcp_mem='378372 504499 756744'
+sudo sysctl -w net.ipv4.route.flush=1
+```
+
+Tuning:
+
+```
+sudo sysctl -w net.core.rmem_max=8388608
+sudo sysctl -w net.core.wmem_max=8388608
+sudo sysctl -w net.core.rmem_default=65536
+sudo sysctl -w net.core.wmem_default=65536
+sudo sysctl -w net.ipv4.tcp_rmem='4096 87380 8388608'
+sudo sysctl -w net.ipv4.tcp_wmem='4096 65536 8388608'
+sudo sysctl -w net.ipv4.tcp_mem='8388608 8388608 8388608'
+sudo sysctl -w net.ipv4.route.flush=1
+```
+
+### IPv6
+
+- Disable:
+
+```
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+```
+
+- Enable:
+
+```
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
+```
 
 ## Key integrity
 
